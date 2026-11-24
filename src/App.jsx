@@ -1,7 +1,7 @@
-import "./index.css";
 import Entete from "./components/Entete";
 import Carte from "./components/Carte";
 import { donnees } from "./donnees.js";
+import NombredeTitres from "./components/NombreDeTitres.jsx";
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           ></Carte>
         ))}
       </section>
+      <NombredeTitres longueur={donnees.length}></NombredeTitres>
     </>
   );
 }
