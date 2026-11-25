@@ -5,6 +5,7 @@ import NombredeTitres from "./components/NombreDeTitres.jsx";
 import Button from "./components/Button.jsx";
 import { useState } from "react";
 import Selecteur from "./components/Selecteur.jsx";
+import Recherche from "./components/Recherche.jsx";
 
 function App() {
   const [recherche, setRecherche] = useState("");
@@ -37,14 +38,10 @@ function App() {
         optionChoisie={optionChoisie}
         action={(e) => setOptionChoisie(e.target.value)}
       ></Selecteur>
-      <p>Option choisie : {optionChoisie}</p>
-      <label htmlFor="recherche"></label>
-      <input
-        type="search"
-        id="recherche"
-        value={recherche}
-        onChange={(e) => setRecherche(e.target.value)}
-      />
+      <Recherche
+        recherche={recherche}
+        action={(e) => setRecherche(e.target.value)}
+      ></Recherche>
       <Button action={effacer} contenu="effacer"></Button>
       <section className="cartes">
         {displayLivre().length > 0 ? (
