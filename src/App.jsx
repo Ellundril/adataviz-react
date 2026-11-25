@@ -2,10 +2,11 @@ import Entete from "./components/Entete";
 import Carte from "./components/Carte";
 import { donnees } from "./donnees.js";
 import NombredeTitres from "./components/NombreDeTitres.jsx";
+import Button from "./components/Button.jsx";
 import { useState } from "react";
 
 function App() {
-  const [recherche, setRecherche] = useState([]);
+  const [recherche, setRecherche] = useState("");
   function displayLivre() {
     if (recherche.length === 0) {
       return donnees;
@@ -15,6 +16,10 @@ function App() {
     );
     return livresFiltres;
   }
+
+  function effacer() {
+    setRecherche("");
+  }
   return (
     <>
       <Entete></Entete>
@@ -22,8 +27,10 @@ function App() {
       <input
         type="search"
         id="recherche"
+        value={recherche}
         onChange={(e) => setRecherche(e.target.value)}
       />
+      <Button action={effacer} contenu="effacer"></Button>
       <section className="cartes">
         {displayLivre().length > 0 ? (
           displayLivre().map((livre) => (
