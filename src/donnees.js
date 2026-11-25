@@ -55,6 +55,33 @@ const brutes = [
     nombre_de_pret_total: 1483,
     nombre_d_exemplaires: 62,
   },
+  {
+    type_de_document: "Bande dessinée jeunesse",
+    prets: 660,
+    titre: "Machine à blagues",
+    auteur: "Pujol, Romain",
+    nombre_de_localisations: 41,
+    nombre_de_pret_total: 1420,
+    nombre_d_exemplaires: 44,
+  },
+  {
+    type_de_document: "Bande dessinée jeunesse",
+    prets: 647,
+    titre: "La menace Schtroumpf",
+    auteur: "Parthoens, Luc",
+    nombre_de_localisations: 33,
+    nombre_de_pret_total: 3834,
+    nombre_d_exemplaires: 45,
+  },
+  {
+    type_de_document: "Livre adulte",
+    prets: 590,
+    titre: "Enfant de salaud",
+    auteur: "Chalandon, Sorj",
+    nombre_de_localisations: 49,
+    nombre_de_pret_total: 921,
+    nombre_d_exemplaires: 53,
+  },
 ];
 
 const donnees = formaterListe(brutes);

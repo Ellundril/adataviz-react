@@ -4,17 +4,26 @@ import { donnees } from "./donnees.js";
 import NombredeTitres from "./components/NombreDeTitres.jsx";
 import Button from "./components/Button.jsx";
 import { useState } from "react";
+import Selecteur from "./components/Selecteur.jsx";
 
 function App() {
   const [recherche, setRecherche] = useState("");
+  const [optionChoisie, setOptionChoisie] = useState("tous");
+
   function displayLivre() {
-    if (recherche.length === 0) {
+    if (recherche.length === 0 && optionChoisie === "tous") {
       return donnees;
+    } else if (optionChoisie !== "tous") {
+      return donnees.filter(
+        (livre) =>
+          livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()) &&
+          livre.typeDoc === optionChoisie,
+      );
+    } else {
+      return donnees.filter((livre) =>
+        livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
+      );
     }
-    const livresFiltres = donnees.filter((livre) =>
-      livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
-    );
-    return livresFiltres;
   }
 
   function effacer() {
@@ -23,6 +32,12 @@ function App() {
   return (
     <>
       <Entete></Entete>
+      <Selecteur
+        liste={donnees}
+        optionChoisie={optionChoisie}
+        action={(e) => setOptionChoisie(e.target.value)}
+      ></Selecteur>
+      <p>Option choisie : {optionChoisie}</p>
       <label htmlFor="recherche"></label>
       <input
         type="search"
@@ -46,7 +61,7 @@ function App() {
           <p> Aucun livre ne correspond à votre recherche</p>
         )}
       </section>
-      <NombredeTitres longueur={donnees.length}></NombredeTitres>
+      <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
     </>
   );
 }
