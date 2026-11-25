@@ -28,6 +28,33 @@ const brutes = [
     nombre_de_pret_total: 4654,
     nombre_d_exemplaires: 75,
   },
+  {
+    type_de_document: "Bande dessinée jeunesse",
+    prets: 640,
+    titre: "Une vie rose bonbon",
+    auteur: "Pujol, Romain",
+    nombre_de_localisations: 37,
+    nombre_de_pret_total: 1356,
+    nombre_d_exemplaires: 40,
+  },
+  {
+    type_de_document: "Bande dessinée jeunesse",
+    prets: 992,
+    titre: "Mon coup d'soleil, c'est toi !",
+    auteur: "Cazenove, Christophe",
+    nombre_de_localisations: 46,
+    nombre_de_pret_total: 4370,
+    nombre_d_exemplaires: 70,
+  },
+  {
+    type_de_document: "Livre adulte",
+    prets: 930,
+    titre: "Premier sang : roman",
+    auteur: "Nothomb, Amélie",
+    nombre_de_localisations: 49,
+    nombre_de_pret_total: 1483,
+    nombre_d_exemplaires: 62,
+  },
 ];
 
 const donnees = formaterListe(brutes);

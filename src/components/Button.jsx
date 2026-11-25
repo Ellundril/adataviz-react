@@ -1,3 +1,7 @@
-export default function Button({ action }) {
-  return <button onClick={action}>Click me !</button>;
+export default function Button({ action, contenu }) {
+  return (
+    <button onClick={action} type="button">
+      {contenu}
+    </button>
+  );
 }
