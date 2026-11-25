@@ -53,4 +53,18 @@ function recherche(input, listeLivres) {
   const resultatsRecherche = new Set(livresTrouves);
   return Array.from(resultatsRecherche);
 }
-export { formaterListe, trierPrets, formatNbdeResultat, recherche };
+
+function creerFiltre(listeLivres) {
+  let tabOptions = ["tous"];
+  listeLivres.forEach((livre) => tabOptions.push(livre.typeDoc));
+
+  const setOption = new Set(tabOptions);
+  return Array.from(setOption);
+}
+export {
+  formaterListe,
+  trierPrets,
+  formatNbdeResultat,
+  recherche,
+  creerFiltre,
+};

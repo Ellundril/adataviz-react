@@ -2,23 +2,63 @@ import Entete from "./components/Entete";
 import Carte from "./components/Carte";
 import { donnees } from "./donnees.js";
 import NombredeTitres from "./components/NombreDeTitres.jsx";
+import Button from "./components/Button.jsx";
+import { useState } from "react";
+import Selecteur from "./components/Selecteur.jsx";
+import Recherche from "./components/Recherche.jsx";
 
 function App() {
+  const [recherche, setRecherche] = useState("");
+  const [optionChoisie, setOptionChoisie] = useState("tous");
+
+  function displayLivre() {
+    if (recherche.length === 0 && optionChoisie === "tous") {
+      return donnees;
+    } else if (optionChoisie !== "tous") {
+      return donnees.filter(
+        (livre) =>
+          livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()) &&
+          livre.typeDoc === optionChoisie,
+      );
+    } else {
+      return donnees.filter((livre) =>
+        livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
+      );
+    }
+  }
+
+  function effacer() {
+    setRecherche("");
+  }
   return (
     <>
       <Entete></Entete>
+      <Selecteur
+        liste={donnees}
+        optionChoisie={optionChoisie}
+        action={(e) => setOptionChoisie(e.target.value)}
+      ></Selecteur>
+      <Recherche
+        recherche={recherche}
+        action={(e) => setRecherche(e.target.value)}
+      ></Recherche>
+      <Button action={effacer} contenu="effacer"></Button>
       <section className="cartes">
-        {donnees.map((livre) => (
-          <Carte
-            key={livre.id}
-            titre={livre.titre}
-            auteur={livre.auteur}
-            typeDoc={livre.typeDoc}
-            prets={livre.prets}
-          ></Carte>
-        ))}
+        {displayLivre().length > 0 ? (
+          displayLivre().map((livre) => (
+            <Carte
+              key={livre.id}
+              titre={livre.titre}
+              auteur={livre.auteur}
+              typeDoc={livre.typeDoc}
+              prets={livre.prets}
+            ></Carte>
+          ))
+        ) : (
+          <p> Aucun livre ne correspond à votre recherche</p>
+        )}
       </section>
-      <NombredeTitres longueur={donnees.length}></NombredeTitres>
+      <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
     </>
   );
 }
