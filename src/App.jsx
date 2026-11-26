@@ -9,6 +9,7 @@ import {
   formaterListe,
   creerFiltreAuteur,
   creerFiltreTypeDoc,
+  trierPrets,
 } from "./utils.js";
 
 function App() {
@@ -28,9 +29,11 @@ function App() {
     ) {
       return livres;
     }
+
     let typeLivre = livres;
     let auteurLivre = livres;
     let rechercheLivre = livres;
+
     if (optionChoisie !== "tous") {
       typeLivre = livres.filter((livre) => livre.typeDoc === optionChoisie);
     }
@@ -59,6 +62,8 @@ function App() {
 
   function effacer() {
     setRecherche("");
+    setOptionChoisie("tous");
+    setAuteurChoisi("tous");
   }
 
   useEffect(() => {
@@ -104,6 +109,22 @@ function App() {
             action={(e) => setRecherche(e.target.value)}
           ></Recherche>
           <Button action={effacer} contenu="effacer"></Button>
+          <Button
+            className="tri-nb-de-prets-decroissant"
+            action={() => {
+              setLivres(trierPrets(livres, "décroissant"));
+            }}
+            aria-label="trier les livres par ordre décroissant de prêts"
+            contenu={"⬇️"}
+          ></Button>
+          <Button
+            className="tri-nb-de-prets-croissant"
+            action={() => {
+              setLivres(trierPrets(livres, "croissant"));
+            }}
+            aria-label="trier les livres par ordre croissant de prêts"
+            contenu={"⬆️"}
+          ></Button>
         </div>
       </section>
       <section className="cartes">
