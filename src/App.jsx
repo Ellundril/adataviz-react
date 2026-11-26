@@ -5,7 +5,11 @@ import Button from "./components/Button.jsx";
 import { useState, useEffect } from "react";
 import Selecteur from "./components/Selecteur.jsx";
 import Recherche from "./components/Recherche.jsx";
-import { formaterListe } from "./utils.js";
+import {
+  formaterListe,
+  creerFiltreAuteur,
+  creerFiltreTypeDoc,
+} from "./utils.js";
 
 function App() {
   const [recherche, setRecherche] = useState("");
@@ -60,6 +64,13 @@ function App() {
       <section className="filtres">
         <div className="filtre-select">
           <Selecteur
+            choixSelect={creerFiltreTypeDoc}
+            liste={livres}
+            optionChoisie={optionChoisie}
+            action={(e) => setOptionChoisie(e.target.value)}
+          ></Selecteur>
+          <Selecteur
+            choixSelect={creerFiltreAuteur}
             liste={livres}
             optionChoisie={optionChoisie}
             action={(e) => setOptionChoisie(e.target.value)}

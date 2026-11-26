@@ -51,9 +51,17 @@ function recherche(input, listeLivres) {
   return Array.from(resultatsRecherche);
 }
 
-function creerFiltre(listeLivres) {
+function creerFiltreTypeDoc(listeLivres) {
   let tabOptions = ["tous"];
   listeLivres.forEach((livre) => tabOptions.push(livre.typeDoc));
+
+  const setOption = new Set(tabOptions);
+  return Array.from(setOption);
+}
+
+function creerFiltreAuteur(listeLivres) {
+  let tabOptions = ["tous"];
+  listeLivres.forEach((livre) => tabOptions.push(livre.auteur));
 
   const setOption = new Set(tabOptions);
   return Array.from(setOption);
@@ -63,5 +71,6 @@ export {
   trierPrets,
   formatNbdeResultat,
   recherche,
-  creerFiltre,
+  creerFiltreTypeDoc,
+  creerFiltreAuteur,
 };

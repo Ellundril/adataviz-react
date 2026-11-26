@@ -1,6 +1,10 @@
-import { creerFiltre } from "../utils.js";
-export default function Selecteur({ liste, optionChoisie, action }) {
-  const filtres = creerFiltre(liste);
+export default function Selecteur({
+  liste,
+  optionChoisie,
+  action,
+  choixSelect,
+}) {
+  const filtres = choixSelect(liste);
   return (
     <select onChange={action} value={optionChoisie}>
       {filtres.map((type) => {
