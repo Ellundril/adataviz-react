@@ -20,6 +20,7 @@ function App() {
   const [erreur, setErreur] = useState(false);
   const [messageErreur, setMessageErreur] = useState("");
   const [chargement, setChargement] = useState(true);
+  const [filtreActif, setFiltreActif] = useState(false);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
 
@@ -37,12 +38,15 @@ function App() {
     let rechercheLivre = livres;
 
     if (optionChoisie !== "tous") {
+      !filtreActif && setFiltreActif(true);
       typeLivre = livres.filter((livre) => livre.typeDoc === optionChoisie);
     }
     if (auteurChoisi !== "tous") {
+      !filtreActif && setFiltreActif(true);
       auteurLivre = livres.filter((livre) => livre.auteur === auteurChoisi);
     }
     if (recherche.length !== 0) {
+      !filtreActif && setFiltreActif(true);
       rechercheLivre = livres.filter((livre) =>
         livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
       );
@@ -66,6 +70,7 @@ function App() {
     setRecherche("");
     setOptionChoisie("tous");
     setAuteurChoisi("tous");
+    setFiltreActif(false);
   }
 
   useEffect(() => {
@@ -162,9 +167,7 @@ function App() {
             ))
           : !chargement &&
             !erreur &&
-            recherche !== "" && (
-              <p> Aucun livre ne correspond à votre recherche</p>
-            )}
+            filtreActif && <p> Aucun livre ne correspond à votre recherche</p>}
       </section>
       <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
     </>
