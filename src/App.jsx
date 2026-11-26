@@ -1,6 +1,5 @@
 import Entete from "./components/Entete";
 import Carte from "./components/Carte";
-import { donnees } from "./donnees.js";
 import NombredeTitres from "./components/NombreDeTitres.jsx";
 import Button from "./components/Button.jsx";
 import { useState, useEffect } from "react";
