@@ -3,25 +3,28 @@ import Carte from "./components/Carte";
 import { donnees } from "./donnees.js";
 import NombredeTitres from "./components/NombreDeTitres.jsx";
 import Button from "./components/Button.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Selecteur from "./components/Selecteur.jsx";
 import Recherche from "./components/Recherche.jsx";
+import { formaterListe } from "./utils.js";
 
 function App() {
   const [recherche, setRecherche] = useState("");
   const [optionChoisie, setOptionChoisie] = useState("tous");
-
+  const [livres, setLivres] = useState([]);
+  const URL =
+    "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
   function displayLivre() {
     if (recherche.length === 0 && optionChoisie === "tous") {
-      return donnees;
+      return livres;
     } else if (optionChoisie !== "tous") {
-      return donnees.filter(
+      return livres.filter(
         (livre) =>
           livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()) &&
           livre.typeDoc === optionChoisie,
       );
     } else {
-      return donnees.filter((livre) =>
+      return livres.filter((livre) =>
         livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
       );
     }
@@ -30,20 +33,43 @@ function App() {
   function effacer() {
     setRecherche("");
   }
+
+  useEffect(() => {
+    async function getLivres() {
+      try {
+        const response = await fetch(URL);
+        if (!response.ok) {
+          throw new Error(`Erreur status : ${response.status}`);
+        }
+        const resultat = await response.json();
+        setLivres(formaterListe(resultat.results));
+      } catch (erreur) {
+        console.log(erreur);
+      } finally {
+        console.log("données recupérées");
+      }
+    }
+    getLivres();
+  }, []);
   return (
     <>
       <Entete></Entete>
-      <Selecteur
-        liste={donnees}
-        optionChoisie={optionChoisie}
-        action={(e) => setOptionChoisie(e.target.value)}
-      ></Selecteur>
-      <Recherche
-        recherche={recherche}
-        action={(e) => setRecherche(e.target.value)}
-      ></Recherche>
-      <Button action={effacer} contenu="effacer"></Button>
+      <section className="filtres">
+        <div className="filtre-select">
+          <Selecteur
+            liste={livres}
+            optionChoisie={optionChoisie}
+            action={(e) => setOptionChoisie(e.target.value)}
+          ></Selecteur>
+          <Recherche
+            recherche={recherche}
+            action={(e) => setRecherche(e.target.value)}
+          ></Recherche>
+          <Button action={effacer} contenu="effacer"></Button>
+        </div>
+      </section>
       <section className="cartes">
+        <>{livres.length === 0 ? "Chargement" : ""}</>
         {displayLivre().length > 0 ? (
           displayLivre().map((livre) => (
             <Carte

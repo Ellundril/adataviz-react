@@ -6,10 +6,7 @@ function formaterListe(liste) {
       auteur: livre.auteur,
       typeDoc: livre.type_de_document,
       prets: livre.prets,
-      id:
-        livre.titre.trim().replace(" ", "-") +
-        "-" +
-        livre.auteur.trim().replace(" ", "-"),
+      id: livre.titre,
     });
   }
   return infosLivres;
