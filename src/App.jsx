@@ -18,6 +18,9 @@ function App() {
   const [auteurChoisi, setAuteurChoisi] = useState("tous");
   const [livres, setLivres] = useState([]);
   const [erreur, setErreur] = useState(false);
+  const [messageErreur, setMessageErreur] = useState("");
+  const [chargement, setChargement] = useState(true);
+  const [filtreActif, setFiltreActif] = useState(false);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
 
@@ -35,12 +38,15 @@ function App() {
     let rechercheLivre = livres;
 
     if (optionChoisie !== "tous") {
+      !filtreActif && setFiltreActif(true);
       typeLivre = livres.filter((livre) => livre.typeDoc === optionChoisie);
     }
     if (auteurChoisi !== "tous") {
+      !filtreActif && setFiltreActif(true);
       auteurLivre = livres.filter((livre) => livre.auteur === auteurChoisi);
     }
     if (recherche.length !== 0) {
+      !filtreActif && setFiltreActif(true);
       rechercheLivre = livres.filter((livre) =>
         livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
       );
@@ -64,6 +70,7 @@ function App() {
     setRecherche("");
     setOptionChoisie("tous");
     setAuteurChoisi("tous");
+    setFiltreActif(false);
   }
 
   useEffect(() => {
@@ -71,17 +78,15 @@ function App() {
       try {
         const response = await fetch(URL);
         if (!response.ok) {
-          throw new Error(
-            `Un problème est survenu au chargement des fichiers : Erreur status : ${response.status}`,
-          );
+          throw new Error(`Erreur HTTP : ${response.status}`);
         }
         const resultat = await response.json();
         setLivres(formaterListe(resultat.results));
       } catch (erreur) {
-        console.log(erreur);
         setErreur(true);
+        setMessageErreur(erreur.message);
       } finally {
-        console.log("données recupérées");
+        setChargement(false);
       }
     }
     getLivres();
@@ -89,64 +94,80 @@ function App() {
   return (
     <>
       <Entete></Entete>
-      <section className="filtres">
-        <div className="filtre-select">
-          <Selecteur
-            choixSelect={creerFiltreTypeDoc}
-            liste={livres}
-            optionChoisie={optionChoisie}
-            action={(e) => setOptionChoisie(e.target.value)}
-          ></Selecteur>
-          <Selecteur
-            choixSelect={creerFiltreAuteur}
-            liste={livres}
-            optionChoisie={auteurChoisi}
-            action={(e) => setAuteurChoisi(e.target.value)}
-          ></Selecteur>
-          <Recherche
-            recherche={recherche}
-            action={(e) => setRecherche(e.target.value)}
-          ></Recherche>
-          <Button action={effacer} contenu="effacer"></Button>
-          <div className="btn-ordre">
-            <Button
-              className="tri-nb-de-prets-decroissant"
-              action={() => {
-                setLivres(trierPrets(livres, "décroissant"));
-              }}
-              aria-label="trier les livres par ordre décroissant de prêts"
-              contenu={"⬇️"}
-            ></Button>
-            <Button
-              className="tri-nb-de-prets-croissant"
-              action={() => {
-                setLivres(trierPrets(livres, "croissant"));
-              }}
-              aria-label="trier les livres par ordre croissant de prêts"
-              contenu={"⬆️"}
-            ></Button>
+      {!erreur && (
+        <section className="filtres">
+          {/* <button className="btn-affichage-filtres">Afficher les filtres</button> */}
+          <div className="filtre-select">
+            <Selecteur
+              choixSelect={creerFiltreTypeDoc}
+              liste={livres}
+              optionChoisie={optionChoisie}
+              action={(e) => setOptionChoisie(e.target.value)}
+            ></Selecteur>
+            <Selecteur
+              choixSelect={creerFiltreAuteur}
+              liste={livres}
+              optionChoisie={auteurChoisi}
+              action={(e) => setAuteurChoisi(e.target.value)}
+            ></Selecteur>
+            <Recherche
+              recherche={recherche}
+              action={(e) => setRecherche(e.target.value)}
+            ></Recherche>
+            <Button action={effacer} contenu="effacer"></Button>
+            <div className="btn-ordre">
+              <Button
+                className="tri-nb-de-prets-decroissant"
+                action={() => {
+                  setLivres(trierPrets(livres, "décroissant"));
+                }}
+                aria-label="trier les livres par ordre décroissant de prêts"
+                contenu={"⬇️"}
+              ></Button>
+              <Button
+                className="tri-nb-de-prets-croissant"
+                action={() => {
+                  setLivres(trierPrets(livres, "croissant"));
+                }}
+                aria-label="trier les livres par ordre croissant de prêts"
+                contenu={"⬆️"}
+              ></Button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       <section className="cartes">
-        <>{erreur && "Un problème est survenu au chargement"}</>
+        <p role="alert">
+          {erreur &&
+            "Un problème est survenu pendant le chargement des livres : " +
+              messageErreur}
+        </p>
 
-        <>{livres.length === 0 && !erreur ? "Chargement" : ""}</>
+        <p role="status">
+          {livres.length === 0 && !erreur && chargement
+            ? "Chargement des livres ..."
+            : ""}
+        </p>
+        <>
+          {livres.length === 0 && !erreur && !chargement
+            ? "Aucun livre chargé"
+            : ""}
+        </>
 
-        {displayLivre().length > 0 ? (
-          displayLivre().map((livre, index) => (
-            <Carte
-              key={livre.id}
-              titre={livre.titre}
-              auteur={livre.auteur}
-              typeDoc={livre.typeDoc}
-              prets={livre.prets}
-              offset={`${index * 0.03}s`}
-            ></Carte>
-          ))
-        ) : (
-          <p> Aucun livre ne correspond à votre recherche</p>
-        )}
+        {displayLivre().length > 0 && !chargement
+          ? displayLivre().map((livre, index) => (
+              <Carte
+                key={livre.id}
+                titre={livre.titre}
+                auteur={livre.auteur}
+                typeDoc={livre.typeDoc}
+                prets={livre.prets}
+                offset={`${index * 0.03}s`}
+              ></Carte>
+            ))
+          : !chargement &&
+            !erreur &&
+            filtreActif && <p> Aucun livre ne correspond à votre recherche</p>}
       </section>
       <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
     </>
