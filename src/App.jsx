@@ -18,6 +18,7 @@ function App() {
   const [auteurChoisi, setAuteurChoisi] = useState("tous");
   const [livres, setLivres] = useState([]);
   const [erreur, setErreur] = useState(false);
+  const [chargement, setChargement] = useState(true);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
 
@@ -82,6 +83,7 @@ function App() {
         setErreur(true);
       } finally {
         console.log("données recupérées");
+        setChargement(false);
       }
     }
     getLivres();
@@ -90,6 +92,7 @@ function App() {
     <>
       <Entete></Entete>
       <section className="filtres">
+        {/* <button className="btn-affichage-filtres">Afficher les filtres</button> */}
         <div className="filtre-select">
           <Selecteur
             choixSelect={creerFiltreTypeDoc}
@@ -131,22 +134,20 @@ function App() {
       <section className="cartes">
         <>{erreur && "Un problème est survenu au chargement"}</>
 
-        <>{livres.length === 0 && !erreur ? "Chargement" : ""}</>
+        <>{livres.length === 0 && !erreur ? "Chargement des livres ..." : ""}</>
 
-        {displayLivre().length > 0 ? (
-          displayLivre().map((livre, index) => (
-            <Carte
-              key={livre.id}
-              titre={livre.titre}
-              auteur={livre.auteur}
-              typeDoc={livre.typeDoc}
-              prets={livre.prets}
-              offset={`${index * 0.03}s`}
-            ></Carte>
-          ))
-        ) : (
-          <p> Aucun livre ne correspond à votre recherche</p>
-        )}
+        {displayLivre().length > 0 && !chargement
+          ? displayLivre().map((livre, index) => (
+              <Carte
+                key={livre.id}
+                titre={livre.titre}
+                auteur={livre.auteur}
+                typeDoc={livre.typeDoc}
+                prets={livre.prets}
+                offset={`${index * 0.03}s`}
+              ></Carte>
+            ))
+          : !chargement && <p> Aucun livre ne correspond à votre recherche</p>}
       </section>
       <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
     </>
