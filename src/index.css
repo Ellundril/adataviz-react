@@ -140,6 +140,7 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   width: 90vw;
   padding: 0 0.3rem;
   border-bottom: solid 2px black;
+  align-self: center;
 }
 .carte {
   --offset: 0s;

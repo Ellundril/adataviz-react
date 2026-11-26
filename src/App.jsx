@@ -14,23 +14,51 @@ import {
 function App() {
   const [recherche, setRecherche] = useState("");
   const [optionChoisie, setOptionChoisie] = useState("tous");
+  const [auteurChoisi, setAuteurChoisi] = useState("tous");
   const [livres, setLivres] = useState([]);
   const [erreur, setErreur] = useState(false);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
+
   function displayLivre() {
-    if (recherche.length === 0 && optionChoisie === "tous") {
+    if (
+      recherche.length === 0 &&
+      optionChoisie === "tous" &&
+      auteurChoisi === "tous"
+    ) {
       return livres;
-    } else if (optionChoisie !== "tous") {
-      return livres.filter(
-        (livre) =>
-          livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()) &&
-          livre.typeDoc === optionChoisie,
+    }
+    let typeLivre = livres;
+    let auteurLivre = livres;
+    let rechercheLivre = livres;
+    if (optionChoisie !== "tous") {
+      const typeLivre = livres.filter(
+        (livre) => livre.typeDoc === optionChoisie,
       );
-    } else {
-      return livres.filter((livre) =>
+      // return typeLivre;
+    }
+    if (auteurChoisi !== "tous") {
+      const auteurLivre = livres.filter(
+        (livre) => livre.auteur === auteurChoisi,
+      );
+      // return auteurLivre;
+    }
+    if (recherche.length !== 0) {
+      const rechercheLivre = livres.filter((livre) =>
         livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
       );
+      // return rechercheLivre;
+    }
+    if (
+      recherche.length !== 0 ||
+      optionChoisie !== "tous" ||
+      auteurChoisi !== "tous"
+    ) {
+      const communs = rechercheLivre.filter((livre) =>
+        auteurLivre.includes(livre),
+      );
+      const communsFinal = communs.filter((livre) => typeLivre.includes(livre));
+      return communsFinal;
     }
   }
 
@@ -72,9 +100,10 @@ function App() {
           <Selecteur
             choixSelect={creerFiltreAuteur}
             liste={livres}
-            optionChoisie={optionChoisie}
-            action={(e) => setOptionChoisie(e.target.value)}
+            optionChoisie={auteurChoisi}
+            action={(e) => setAuteurChoisi(e.target.value)}
           ></Selecteur>
+          <p>Auteur choisi :{auteurChoisi}</p>
           <Recherche
             recherche={recherche}
             action={(e) => setRecherche(e.target.value)}
