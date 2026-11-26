@@ -142,6 +142,7 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   border-bottom: solid 2px black;
 }
 .carte {
+  --offset: 0s;
   background-color: rgba(252, 176, 69, 1);
   border: 2px solid rgba(253, 29, 29, 1);
   box-shadow: 2px 2px 4px rgb(75, 15, 15);
@@ -150,6 +151,22 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   padding: 0.5rem 1rem;
   margin: 5px;
   justify-self: center;
+  animation: 0.6s apparition ease-out;
+  animation-delay: var(--offset);
+}
+@keyframes apparition {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
 .titre-livre {

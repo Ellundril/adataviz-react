@@ -78,13 +78,14 @@ function App() {
         <>{livres.length === 0 && !erreur ? "Chargement" : ""}</>
 
         {displayLivre().length > 0 ? (
-          displayLivre().map((livre) => (
+          displayLivre().map((livre, index) => (
             <Carte
               key={livre.id}
               titre={livre.titre}
               auteur={livre.auteur}
               typeDoc={livre.typeDoc}
               prets={livre.prets}
+              offset={`${index * 0.03}s`}
             ></Carte>
           ))
         ) : (
