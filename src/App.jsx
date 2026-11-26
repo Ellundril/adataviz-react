@@ -41,7 +41,7 @@ function App() {
       const auteurLivre = livres.filter(
         (livre) => livre.auteur === auteurChoisi,
       );
-      // return auteurLivre;
+      return auteurLivre;
     }
     if (recherche.length !== 0) {
       const rechercheLivre = livres.filter((livre) =>
@@ -58,6 +58,7 @@ function App() {
         auteurLivre.includes(livre),
       );
       const communsFinal = communs.filter((livre) => typeLivre.includes(livre));
+      console.log(communsFinal);
       return communsFinal;
     }
   }
