@@ -50,9 +50,9 @@ function App() {
       const communs = rechercheLivre.filter((livre) =>
         auteurLivre.includes(livre),
       );
-      console.log(communs);
+
       const communsFinal = communs.filter((livre) => typeLivre.includes(livre));
-      console.log(communsFinal);
+
       return communsFinal;
     }
   }
