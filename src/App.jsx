@@ -32,22 +32,15 @@ function App() {
     let auteurLivre = livres;
     let rechercheLivre = livres;
     if (optionChoisie !== "tous") {
-      const typeLivre = livres.filter(
-        (livre) => livre.typeDoc === optionChoisie,
-      );
-      // return typeLivre;
+      typeLivre = livres.filter((livre) => livre.typeDoc === optionChoisie);
     }
     if (auteurChoisi !== "tous") {
-      const auteurLivre = livres.filter(
-        (livre) => livre.auteur === auteurChoisi,
-      );
-      // return auteurLivre;
+      auteurLivre = livres.filter((livre) => livre.auteur === auteurChoisi);
     }
     if (recherche.length !== 0) {
-      const rechercheLivre = livres.filter((livre) =>
+      rechercheLivre = livres.filter((livre) =>
         livre.titre.toLowerCase().includes(recherche.trim().toLowerCase()),
       );
-      // return rechercheLivre;
     }
     if (
       recherche.length !== 0 ||
@@ -57,7 +50,9 @@ function App() {
       const communs = rechercheLivre.filter((livre) =>
         auteurLivre.includes(livre),
       );
+      console.log(communs);
       const communsFinal = communs.filter((livre) => typeLivre.includes(livre));
+      console.log(communsFinal);
       return communsFinal;
     }
   }

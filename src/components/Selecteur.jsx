@@ -8,7 +8,11 @@ export default function Selecteur({
   return (
     <select onChange={action} value={optionChoisie}>
       {filtres.map((type) => {
-        return <option key={type}>{type}</option>;
+        return (
+          <option key={type} value={type}>
+            {type}
+          </option>
+        );
       })}
     </select>
   );
