@@ -18,6 +18,7 @@ function App() {
   const [auteurChoisi, setAuteurChoisi] = useState("tous");
   const [livres, setLivres] = useState([]);
   const [erreur, setErreur] = useState(false);
+  const [messageErreur, setMessageErreur] = useState("");
   const [chargement, setChargement] = useState(true);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
@@ -77,10 +78,9 @@ function App() {
         const resultat = await response.json();
         setLivres(formaterListe(resultat.results));
       } catch (erreur) {
-        console.log(erreur.message);
         setErreur(true);
+        setMessageErreur(erreur.message);
       } finally {
-        console.log("données recupérées");
         setChargement(false);
       }
     }
@@ -132,9 +132,22 @@ function App() {
         </section>
       )}
       <section className="cartes">
-        <>{erreur && "Un problème est survenu au chargement"}</>
+        <p role="alert">
+          {erreur &&
+            "Un problème est survenu pendant le chargement des livres : " +
+              messageErreur}
+        </p>
 
-        <>{livres.length === 0 && !erreur ? "Chargement des livres ..." : ""}</>
+        <p role="status">
+          {livres.length === 0 && !erreur && chargement
+            ? "Chargement des livres ..."
+            : ""}
+        </p>
+        <>
+          {livres.length === 0 && !erreur && !chargement
+            ? "Aucun livre chargé"
+            : ""}
+        </>
 
         {displayLivre().length > 0 && !chargement
           ? displayLivre().map((livre, index) => (
@@ -148,7 +161,10 @@ function App() {
               ></Carte>
             ))
           : !chargement &&
-            !erreur && <p> Aucun livre ne correspond à votre recherche</p>}
+            !erreur &&
+            recherche !== "" && (
+              <p> Aucun livre ne correspond à votre recherche</p>
+            )}
       </section>
       <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
     </>
