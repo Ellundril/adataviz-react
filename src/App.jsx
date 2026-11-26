@@ -12,6 +12,7 @@ function App() {
   const [recherche, setRecherche] = useState("");
   const [optionChoisie, setOptionChoisie] = useState("tous");
   const [livres, setLivres] = useState([]);
+  const [erreur, setErreur] = useState(false);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
   function displayLivre() {
@@ -39,12 +40,15 @@ function App() {
       try {
         const response = await fetch(URL);
         if (!response.ok) {
-          throw new Error(`Erreur status : ${response.status}`);
+          throw new Error(
+            `Un problème est survenu au chargement des fichiers : Erreur status : ${response.status}`,
+          );
         }
         const resultat = await response.json();
         setLivres(formaterListe(resultat.results));
       } catch (erreur) {
         console.log(erreur);
+        setErreur(true);
       } finally {
         console.log("données recupérées");
       }
@@ -69,15 +73,19 @@ function App() {
         </div>
       </section>
       <section className="cartes">
-        <>{livres.length === 0 ? "Chargement" : ""}</>
+        <>{erreur && "Un problème est survenu au chargement"}</>
+
+        <>{livres.length === 0 && !erreur ? "Chargement" : ""}</>
+
         {displayLivre().length > 0 ? (
-          displayLivre().map((livre) => (
+          displayLivre().map((livre, index) => (
             <Carte
               key={livre.id}
               titre={livre.titre}
               auteur={livre.auteur}
               typeDoc={livre.typeDoc}
               prets={livre.prets}
+              offset={`${index * 0.03}s`}
             ></Carte>
           ))
         ) : (
