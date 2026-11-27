@@ -21,6 +21,7 @@ function App() {
   const [messageErreur, setMessageErreur] = useState("");
   const [chargement, setChargement] = useState(true);
   const [filtreActif, setFiltreActif] = useState(false);
+  const [cacheFiltre, setCacheFiltre] = useState(true);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
 
@@ -96,8 +97,14 @@ function App() {
       <Entete></Entete>
       {!erreur && (
         <section className="filtres">
-          {/* <button className="btn-affichage-filtres">Afficher les filtres</button> */}
-          <div className="filtre-select">
+          <Button
+            action={() => setCacheFiltre(!cacheFiltre)}
+            contenu="Afficher les filtres"
+            classe="btn-affichage-filtres"
+          ></Button>
+          <div
+            className={cacheFiltre ? "filtre-select cache" : "filtre-select"}
+          >
             <Selecteur
               choixSelect={creerFiltreTypeDoc}
               liste={livres}
@@ -117,7 +124,7 @@ function App() {
             <Button action={effacer} contenu="effacer"></Button>
             <div className="btn-ordre">
               <Button
-                className="tri-nb-de-prets-decroissant"
+                classe="tri-nb-de-prets-decroissant"
                 action={() => {
                   setLivres(trierPrets(livres, "décroissant"));
                 }}
@@ -125,7 +132,7 @@ function App() {
                 contenu={"⬇️"}
               ></Button>
               <Button
-                className="tri-nb-de-prets-croissant"
+                classe="tri-nb-de-prets-croissant"
                 action={() => {
                   setLivres(trierPrets(livres, "croissant"));
                 }}
@@ -136,18 +143,18 @@ function App() {
           </div>
         </section>
       )}
-      <section className="cartes">
-        <p role="alert">
-          {erreur &&
-            "Un problème est survenu pendant le chargement des livres : " +
-              messageErreur}
-        </p>
+      <p role="alert">
+        {erreur &&
+          "Un problème est survenu pendant le chargement des livres : " +
+            messageErreur}
+      </p>
 
-        <p role="status">
-          {livres.length === 0 && !erreur && chargement
-            ? "Chargement des livres ..."
-            : ""}
-        </p>
+      <p role="status">
+        {livres.length === 0 && !erreur && chargement
+          ? "Chargement des livres ..."
+          : ""}
+      </p>
+      <section className="cartes">
         <>
           {livres.length === 0 && !erreur && !chargement
             ? "Aucun livre chargé"
