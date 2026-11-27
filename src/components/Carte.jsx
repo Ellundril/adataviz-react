@@ -15,13 +15,14 @@ export default function Carte({
     <article className="carte" style={{ "--offset": offset }}>
       <h2 className="titre-livre">{titre}</h2>
       <p className="auteur">{auteur}</p>
-      <p>{typeDoc}</p>
+      <p className="type-doc">{typeDoc}</p>
 
       <Button
         action={boutonClique}
         contenu={
           ouvert ? "Cacher le nombre de prêts" : "Afficher le nombre de prêts"
         }
+        classe="btn-standard"
       ></Button>
       {ouvert && <p className="prets">{prets}</p>}
     </article>

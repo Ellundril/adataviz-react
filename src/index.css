@@ -115,7 +115,12 @@ input:focus-visible {
   font-size: 1.2rem;
 }
 
-.tri-nb-de-prets:focus-visible {
+.tri-nb-de-prets-croissant:focus-visible {
+  outline: 2px solid rgb(75, 15, 15);
+  border-radius: 5px;
+  background-color: rgba(252, 176, 69, 1);
+}
+.tri-nb-de-prets-decroissant:focus-visible {
   outline: 2px solid rgb(75, 15, 15);
   border-radius: 5px;
   background-color: rgba(252, 176, 69, 1);
@@ -128,7 +133,25 @@ côté enfant tu peux faire des breakpoint relatif à un parent
 */
 /* animation quand on filtre ???  */
 /* moteur de recherche avec un debounce */
+.btn-standard {
+  all: unset;
+  cursor: pointer;
+  background-color: rgb(253, 205, 141);
+  color: rgb(75, 15, 15);
+  font-size: 1rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px rgb(75, 15, 15);
+  border: solid 2px rgba(252, 176, 69, 1);
+  transition: 0.3s ease-in-out;
+}
+.btn-standard:focus-visible {
+  outline: 2px solid rgb(75, 15, 15);
+}
 
+.btn-standard:hover {
+  transform: scale(1.1);
+}
 .cartes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -186,6 +209,9 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   margin-top: 0.3rem;
 }
 
+.type-doc {
+  margin-bottom: 1rem;
+}
 .nb-total-livres {
   font-size: 1.2rem;
   font-weight: bold;

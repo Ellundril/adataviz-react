@@ -22,6 +22,7 @@ function App() {
   const [chargement, setChargement] = useState(true);
   const [filtreActif, setFiltreActif] = useState(false);
   const [cacheFiltre, setCacheFiltre] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
   const URL =
     "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
 
@@ -83,6 +84,7 @@ function App() {
         }
         const resultat = await response.json();
         setLivres(formaterListe(resultat.results));
+        setTotalCount(resultat.total_count);
       } catch (erreur) {
         setErreur(true);
         setMessageErreur(erreur.message);
@@ -96,52 +98,59 @@ function App() {
     <>
       <Entete></Entete>
       {!erreur && (
-        <section className="filtres">
-          <Button
-            action={() => setCacheFiltre(!cacheFiltre)}
-            contenu="Afficher les filtres"
-            classe="btn-affichage-filtres"
-          ></Button>
-          <div
-            className={cacheFiltre ? "filtre-select cache" : "filtre-select"}
-          >
-            <Selecteur
-              choixSelect={creerFiltreTypeDoc}
-              liste={livres}
-              optionChoisie={optionChoisie}
-              action={(e) => setOptionChoisie(e.target.value)}
-            ></Selecteur>
-            <Selecteur
-              choixSelect={creerFiltreAuteur}
-              liste={livres}
-              optionChoisie={auteurChoisi}
-              action={(e) => setAuteurChoisi(e.target.value)}
-            ></Selecteur>
-            <Recherche
-              recherche={recherche}
-              action={(e) => setRecherche(e.target.value)}
-            ></Recherche>
-            <Button action={effacer} contenu="effacer"></Button>
-            <div className="btn-ordre">
+        <>
+          <p className="nb-total-livres">{totalCount} livres sur le portail</p>
+          <section className="filtres">
+            <Button
+              action={() => setCacheFiltre(!cacheFiltre)}
+              contenu="Afficher les filtres"
+              classe="btn-affichage-filtres"
+            ></Button>
+            <div
+              className={cacheFiltre ? "filtre-select cache" : "filtre-select"}
+            >
+              <Selecteur
+                choixSelect={creerFiltreTypeDoc}
+                liste={livres}
+                optionChoisie={optionChoisie}
+                action={(e) => setOptionChoisie(e.target.value)}
+              ></Selecteur>
+              <Selecteur
+                choixSelect={creerFiltreAuteur}
+                liste={livres}
+                optionChoisie={auteurChoisi}
+                action={(e) => setAuteurChoisi(e.target.value)}
+              ></Selecteur>
+              <Recherche
+                recherche={recherche}
+                action={(e) => setRecherche(e.target.value)}
+              ></Recherche>
               <Button
-                classe="tri-nb-de-prets-decroissant"
-                action={() => {
-                  setLivres(trierPrets(livres, "décroissant"));
-                }}
-                aria-label="trier les livres par ordre décroissant de prêts"
-                contenu={"⬇️"}
+                action={effacer}
+                contenu="effacer"
+                classe="btn-standard"
               ></Button>
-              <Button
-                classe="tri-nb-de-prets-croissant"
-                action={() => {
-                  setLivres(trierPrets(livres, "croissant"));
-                }}
-                aria-label="trier les livres par ordre croissant de prêts"
-                contenu={"⬆️"}
-              ></Button>
+              <div className="btn-ordre">
+                <Button
+                  classe="tri-nb-de-prets-decroissant"
+                  action={() => {
+                    setLivres(trierPrets(livres, "décroissant"));
+                  }}
+                  aria-label="trier les livres par ordre décroissant de prêts"
+                  contenu={"⬇️"}
+                ></Button>
+                <Button
+                  classe="tri-nb-de-prets-croissant"
+                  action={() => {
+                    setLivres(trierPrets(livres, "croissant"));
+                  }}
+                  aria-label="trier les livres par ordre croissant de prêts"
+                  contenu={"⬆️"}
+                ></Button>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </>
       )}
       <p role="alert">
         {erreur &&
