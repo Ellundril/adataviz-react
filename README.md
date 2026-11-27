@@ -1,16 +1,45 @@
-# React + Vite
+# Adataviz en react
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Description
 
-Currently, two official plugins are available:
+Ce projet reprend le projet Adataviz ([voir le repo github](https://github.com/Ellundril/Adataviz.git)) en utilisant React à la place de javascript pour gérer l'interactivité de la page.
+Adataviz est un projet qui affiche des données provenant d'une API publique, ici openData Paris, sous forme de cartes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Source des données
 
-## React Compiler
+L' API publique sur laquelle j'ai trouvé les données : [open data Paris](https://opendata.paris.fr/pages/home/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Le nom du jeu de données utilisées dans ce projet : **Les titres les plus prêtés dans les bibliothèques de prêt**
 
-## Expanding the Oxlint configuration
+## Lancement du projet
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+1. Cloner le repo github
+
+   ```bash
+   git clone git@github.com:Ellundril/adataviz-react.git
+   ```
+
+2. Installer les paquets node
+
+   ```bash
+   npm install
+   ```
+
+3. Lancer le projet
+
+   ```bash
+   npm run dev
+   ```
+
+## Adataviz versus Adataviz-react
+
+| fonctionnalités       | **Adataviz**                                                                             | **Adataviz-react**                                                                                                      |
+| --------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Affichage des cartes  | script.js efface et fait réapparaitre à chaque nouvelle requête de filtre, recherche ... | react se charge de vérifier l'état et garde seulement les cartes nécessaires sans avoir à tous effacer à chaque demande |
+| clics sur les boutons | des addEventListeners dans script.js                                                     | onClick dans les composants qui gère l'états des différents éléments                                                    |
+| composants            | pas de composants on utilise createElement                                               | on utilise des composants dans lesquels on passe des props                                                              |
+
+### Améliorations apportées dans le projet react
+
+- **L'interdépendances des filtres** : dans adataviz ils étaient indépendants les uns des autres
+- **la recherche en direct**: dès que l'on tape une lettre la liste de carte se met à jour
