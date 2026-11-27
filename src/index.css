@@ -237,6 +237,11 @@ côté enfant tu peux faire des breakpoint relatif à un parent
 .cache {
   display: none;
 }
+footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 /* =============== Grand écrans ============= */
 @media (min-width: 768px) {
   .btn-affichage-filtres {
@@ -248,5 +253,6 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   .filtre-select {
     display: flex;
     flex-direction: row;
+    max-width: 80vw;
   }
 }
