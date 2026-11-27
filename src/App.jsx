@@ -125,7 +125,11 @@ function App() {
                 recherche={recherche}
                 action={(e) => setRecherche(e.target.value)}
               ></Recherche>
-              <Button action={effacer} contenu="effacer"></Button>
+              <Button
+                action={effacer}
+                contenu="effacer"
+                classe="btn-standard"
+              ></Button>
               <div className="btn-ordre">
                 <Button
                   classe="tri-nb-de-prets-decroissant"
