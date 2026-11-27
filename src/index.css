@@ -140,7 +140,7 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   width: 90vw;
   padding: 0 0.3rem;
   border-bottom: solid 2px black;
-  align-self: center;
+  margin: auto;
 }
 .carte {
   --offset: 0s;
@@ -190,6 +190,7 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   font-size: 1.2rem;
   font-weight: bold;
   color: rgb(75, 15, 15);
+  text-align: center;
 }
 .bd-jeunesse {
   border-color: rgb(0, 162, 255);
