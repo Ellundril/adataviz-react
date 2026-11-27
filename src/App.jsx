@@ -23,8 +23,8 @@ function App() {
   const [filtreActif, setFiltreActif] = useState(false);
   const [cacheFiltre, setCacheFiltre] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const URL =
-    "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=100";
+  const [page, setPage] = useState(1);
+  const URL = `https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-titres-les-plus-pretes/records?limit=20&offset=${100 * (page - 1)}`;
 
   function displayLivre() {
     if (
@@ -93,7 +93,7 @@ function App() {
       }
     }
     getLivres();
-  }, []);
+  }, [page]);
   return (
     <>
       <Entete></Entete>
@@ -109,6 +109,15 @@ function App() {
             <div
               className={cacheFiltre ? "filtre-select cache" : "filtre-select"}
             >
+              <label htmlFor={page}>
+                Page
+                <Selecteur
+                  liste={[1, 2, 3, 4, 5, 6, 7, 8]}
+                  optionChoisie={page}
+                  choixSelect={(liste) => liste}
+                  action={(e) => setPage(e.target.value)}
+                ></Selecteur>
+              </label>
               <Selecteur
                 choixSelect={creerFiltreTypeDoc}
                 liste={livres}

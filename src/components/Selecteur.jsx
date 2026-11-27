@@ -6,7 +6,7 @@ export default function Selecteur({
 }) {
   const filtres = choixSelect(liste);
   return (
-    <select onChange={action} value={optionChoisie}>
+    <select onChange={action} value={optionChoisie} id={optionChoisie}>
       {filtres.map((type) => {
         return (
           <option key={type} value={type}>

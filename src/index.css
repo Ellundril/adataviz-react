@@ -248,5 +248,6 @@ côté enfant tu peux faire des breakpoint relatif à un parent
   .filtre-select {
     display: flex;
     flex-direction: row;
+    max-width: 80vw;
   }
 }
