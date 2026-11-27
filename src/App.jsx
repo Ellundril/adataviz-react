@@ -109,15 +109,6 @@ function App() {
             <div
               className={cacheFiltre ? "filtre-select cache" : "filtre-select"}
             >
-              <label htmlFor={page}>
-                Page
-                <Selecteur
-                  liste={[1, 2, 3, 4, 5, 6, 7, 8]}
-                  optionChoisie={page}
-                  choixSelect={(liste) => liste}
-                  action={(e) => setPage(e.target.value)}
-                ></Selecteur>
-              </label>
               <Selecteur
                 choixSelect={creerFiltreTypeDoc}
                 liste={livres}
@@ -194,7 +185,18 @@ function App() {
             !erreur &&
             filtreActif && <p> Aucun livre ne correspond à votre recherche</p>}
       </section>
-      <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
+      <footer>
+        <label htmlFor={page}>
+          Page
+          <Selecteur
+            liste={[1, 2, 3, 4, 5, 6, 7, 8]}
+            optionChoisie={page}
+            choixSelect={(liste) => liste}
+            action={(e) => setPage(e.target.value)}
+          ></Selecteur>
+        </label>
+        <NombredeTitres longueur={displayLivre().length}></NombredeTitres>
+      </footer>
     </>
   );
 }
